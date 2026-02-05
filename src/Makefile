@@ -7,10 +7,12 @@ SOURCES = mysh.c executor.c parser.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = mysh
 
-all: $(TARGET)
+all: $(TARGET)	
+	@echo "Build complete. Cleaning object files..."
+	$(MAKE) clean-objects
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+				$(CC) $(CFLAGS) -o $@ $^
 
 # Note: The line above MUST start with a TAB character, not spaces
 
