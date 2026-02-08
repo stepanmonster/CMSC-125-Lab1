@@ -38,20 +38,20 @@ void parseInput(char* input){
 */
 
 
-int main(){
+// int main(){
     
-    char* output = outputinput("Hello World");
-    printf("%s \n", output);
-    return 0;
+//     char* output = outputinput("Hello World");
+//     printf("%s \n", output);
+//     return 0;
     
-    /*
-    while(true){
-        printf("mysh> ");
-        char input[64];
-        fgets(input, sizeof input, stdin);
-        // parse input
-        parseInput(input);
-        // execute input (if applicable) or probably pass from parser to executor
-    }
-    */
-}
+//     /*
+//     while(true){
+//         printf("mysh> ");
+//         char input[64];
+//         fgets(input, sizeof input, stdin);
+//         // parse input
+//         parseInput(input);
+//         // execute input (if applicable) or probably pass from parser to executor
+//     }
+//     */
+// }

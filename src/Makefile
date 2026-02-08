@@ -1,4 +1,3 @@
-# Smart Makefile: Compiles separately, then links
 
 CC = gcc
 CFLAGS = -g -Wall -O0 -std=c99
@@ -6,17 +5,28 @@ CFLAGS = -g -Wall -O0 -std=c99
 SOURCES = mysh.c executor.c parser.c 
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = mysh
+HEADER = mysh.h
 
-all: $(TARGET)	
+# 'all' will build the target and then run the clean-objects rule
+all: $(TARGET)
 	@echo "Build complete. Cleaning object files..."
 	$(MAKE) clean-objects
 
+# Links object files into the final executable
 $(TARGET): $(OBJECTS)
-				$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Note: The line above MUST start with a TAB character, not spaces
+# Compiles .c files into .o files
+# Adding $(HEADER) ensures that if you change the struct, everything recompiles
+%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean all
+.PHONY: clean all clean-objects
 
+# This is the target that was missing and caused Error 2
+clean-objects:
+	rm -f $(OBJECTS)
+
+# Full cleanup of executable and objects
 clean:
 	rm -f $(OBJECTS) $(TARGET)
