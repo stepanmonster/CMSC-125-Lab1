@@ -6,7 +6,7 @@
 #include <sys/wait.h> // For waitpid
 #include "mysh.h"     // Include the header file for Command structure
 //
-void execute_command(Command *cmd) {
+void execute_command(Command cmd) {
     pid_t pid = fork();
 
     if (pid < 0) {
@@ -16,8 +16,8 @@ void execute_command(Command *cmd) {
 
     if (pid == 0) {  // Child process
         // Apply redirections if needed
-        if (cmd->input_file) {
-            int fd = open(cmd->input_file, O_RDONLY);
+        if (cmd.input_file) {
+            int fd = open(cmd.input_file, O_RDONLY);
             if (fd < 0) {
                 perror("open input file");
                 exit(1);
@@ -26,10 +26,10 @@ void execute_command(Command *cmd) {
             close(fd);
         }
         
-        if (cmd->output_file) {
+        if (cmd.output_file) {
             int flags = O_WRONLY | O_CREAT;
-            flags |= cmd->append ? O_APPEND : O_TRUNC;
-            int fd = open(cmd->output_file, flags, 0644);
+            flags |= cmd.append ? O_APPEND : O_TRUNC;
+            int fd = open(cmd.output_file, flags, 0644);
             if (fd < 0) {
                 perror("open output file");
                 exit(1);
@@ -39,11 +39,11 @@ void execute_command(Command *cmd) {
         }
         
         // Execute command
-        execvp(cmd->command, cmd->args);
+        execvp(cmd.command, cmd.args);
         perror("exec failed");
         exit(127);
     } else {  // Parent process
-        if (!cmd->background) {
+        if (!cmd.background) {
             int status;
             waitpid(pid, &status, 0);
             if (WIFEXITED(status)) {

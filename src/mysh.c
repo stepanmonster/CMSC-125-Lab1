@@ -15,9 +15,9 @@ int main(){
         //Zero out the command structure before parsing
         memset(&cmd, 0, sizeof(Command));
         // parse input
-        if (parseInput(input, &cmd) == 0) {
+        if (parseInput(input, cmd) == 0) {
             // execute input (if applicable) or probably pass from parser to executor
-            execute_command(&cmd);
+            execute_command(cmd);
         }
         
     }
