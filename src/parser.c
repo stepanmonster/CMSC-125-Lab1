@@ -3,12 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "command.h"
 
 // function prototype declarations
-void exitShell(void);
 
-
-char builtins[3][5] = {"exit", "cd", "pwd"};
 
 char* outputinput(char* command){
 
@@ -25,33 +23,49 @@ void parseInput(char* input){
         return;
     }
 
+    // should be in shell
     if(strcmp(token, "exit") == 0){
         exit(0);
     }
 }
 
-/* void checkFlags(){
-    //
+Command buildCommand(char *args[], Command cmd, int i){
+    cmd.command = args[0];
+    for(int j = 0; j < i; j++){
+    cmd.args[j] = args[j];
+    }
+    cmd.args[i] = NULL;
+    return cmd;
 }
 
+/* 
+void checkFlags(){
+    // check flags and store and pass to executor
+}
+
+void backgroundProcess(){
+    // implement logic where parser passes to appropriate executor function
+}
+
+void ioFunction(){
+    // implement logic where parser passes to appropriate executor function
+}
 
 */
 
-
-// int main(){
+int main(){
+    /*
+    char* output = outputinput("Hello World");
+    printf("%s \n", output);
+    return 0;*/
     
-//     char* output = outputinput("Hello World");
-//     printf("%s \n", output);
-//     return 0;
     
-//     /*
-//     while(true){
-//         printf("mysh> ");
-//         char input[64];
-//         fgets(input, sizeof input, stdin);
-//         // parse input
-//         parseInput(input);
-//         // execute input (if applicable) or probably pass from parser to executor
-//     }
-//     */
-// }
+    while(true){
+        printf("mysh> ");
+        char input[64];
+        fgets(input, sizeof input, stdin);
+        // parse input
+        parseInput(input);
+        // execute input (if applicable) or probably pass from parser to executor
+    }
+}
