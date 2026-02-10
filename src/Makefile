@@ -5,7 +5,7 @@ CFLAGS = -g -Wall -O0 -std=c99
 SOURCES = mysh.c executor.c parser.c 
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = mysh
-HEADER = mysh.h
+HEADER = command.h
 
 # 'all' will build the target and then run the clean-objects rule
 all: $(TARGET)

@@ -15,57 +15,18 @@ char* outputinput(char* command){
     return output;
 }
 
-// should return string array
-void parseInput(char* input, Command cmd){
-    input[strcspn(input, "\n")] = '\0';
-    char* token = strtok(input, " ");
-    if(token == NULL){
+void parseInput(char* args[], Command *cmd, int i, bool append, bool background, char *input_file, char *output_file){
+    if(args[0] == NULL){
         return;
     }
+    cmd->append = append;
+    cmd->background = background;
+    cmd->input_file = input_file;
+    cmd->output_file = output_file;
 
-    // should be in shell
-    if(strcmp(token, "exit") == 0){
-        exit(0);
-    }
-}
-
-Command buildCommand(char *args[], Command cmd, int i){
-    cmd.command = args[0];
     for(int j = 0; j < i; j++){
-    cmd.args[j] = args[j];
+    cmd->command = args[0];
+    cmd->args[j] = args[j];
     }
-    cmd.args[i] = NULL;
-    return cmd;
+    cmd->args[i] = NULL;
 }
-
-/* 
-void checkFlags(){
-    // check flags and store and pass to executor
-}
-
-void backgroundProcess(){
-    // implement logic where parser passes to appropriate executor function
-}
-
-void ioFunction(){
-    // implement logic where parser passes to appropriate executor function
-}
-
-*/
-
-// int main(){
-//     /*
-//     char* output = outputinput("Hello World");
-//     printf("%s \n", output);
-//     return 0;*/
-    
-    
-//     while(true){
-//         printf("mysh> ");
-//         char input[64];
-//         fgets(input, sizeof input, stdin);
-//         // parse input
-//         parseInput(input, Command cmd);
-//         // execute input (if applicable) or probably pass from parser to executor
-//     }
-// }
