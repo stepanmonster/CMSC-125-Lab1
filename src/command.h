@@ -13,9 +13,7 @@ typedef struct {
     bool background;      // true if & present
 } Command;
 
-// Function prototypes - tells the compiler these functions exist elsewhere
-void parseInput(char *args[], Command *cmd, int i, bool append, bool background, char *outputfile, char *inputfile);
+void parseInput(char *args[], Command *cmd, int i, bool append, bool background, char *output_file, char *input_file);
 void execute_command(Command cmd);
-/* Command buildCommand(char* args[], Command *cmd, int i); */
 
 #endif

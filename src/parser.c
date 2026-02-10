@@ -24,8 +24,8 @@ void parseInput(char* args[], Command *cmd, int i, bool append, bool background,
     cmd->input_file = input_file;
     cmd->output_file = output_file;
 
-    for(int j = 0; j < i; j++){
     cmd->command = args[0];
+    for(int j = 0; j < i; j++){
     cmd->args[j] = args[j];
     }
     cmd->args[i] = NULL;

@@ -9,7 +9,7 @@
 
 char *builtins[] = {"exit", "cd", "pwd"};
 
-void exitShell(void);
+// void exitShell(void);
 void testPrint(char *args[], int i);
 
 // ignore (in progress)
@@ -41,7 +41,7 @@ int main(){
         Command cmd;
         memset(&cmd, 0, sizeof(Command)); // initialize command struct to zero
         
-        // initialize placeholders for command struct members
+        // initialized struct members
         char *args[64];
         char *output_file = NULL;
         char *input_file = NULL;
@@ -83,9 +83,10 @@ int main(){
 
         parseInput(args, &cmd, i, append, background, input_file, output_file);
 
-        // print args for tests
+        // put execution calls here (before free input)
         testPrint(args, i);
 
+        // free memory allocated for input
         free(input);
         input = NULL;
     }
