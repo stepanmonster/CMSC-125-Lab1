@@ -14,8 +14,8 @@ typedef struct {
 } Command;
 
 // Function prototypes - tells the compiler these functions exist elsewhere
-int parseInput(char* input, Command cmd);
+void parseInput(char *input, Command cmd);
 void execute_command(Command cmd);
-Command buildCommand(char* args, Command cmd, int i);
+Command buildCommand(char* args[], Command cmd, int i);
 
 #endif

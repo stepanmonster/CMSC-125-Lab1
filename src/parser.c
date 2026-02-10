@@ -16,7 +16,7 @@ char* outputinput(char* command){
 }
 
 // should return string array
-void parseInput(char* input){
+void parseInput(char* input, Command cmd){
     input[strcspn(input, "\n")] = '\0';
     char* token = strtok(input, " ");
     if(token == NULL){
@@ -53,19 +53,19 @@ void ioFunction(){
 
 */
 
-int main(){
-    /*
-    char* output = outputinput("Hello World");
-    printf("%s \n", output);
-    return 0;*/
+// int main(){
+//     /*
+//     char* output = outputinput("Hello World");
+//     printf("%s \n", output);
+//     return 0;*/
     
     
-    while(true){
-        printf("mysh> ");
-        char input[64];
-        fgets(input, sizeof input, stdin);
-        // parse input
-        parseInput(input);
-        // execute input (if applicable) or probably pass from parser to executor
-    }
-}
+//     while(true){
+//         printf("mysh> ");
+//         char input[64];
+//         fgets(input, sizeof input, stdin);
+//         // parse input
+//         parseInput(input, Command cmd);
+//         // execute input (if applicable) or probably pass from parser to executor
+//     }
+// }

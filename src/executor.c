@@ -4,9 +4,21 @@
 #include <unistd.h>   // For fork, execvp, dup2, close
 #include <fcntl.h>    // For open and O_RDONLY, O_WRONLY, etc.
 #include <sys/wait.h> // For waitpid
-#include "mysh.h"     // Include the header file for Command structure
+#include "command.h"     // Include the header file for Command structure
+#include <string.h>   // For strcmp
 //
 void execute_command(Command cmd) {
+    //Check Built-in commands
+    if(strcmp(cmd.command, "cd") == 0){
+        if(cmd.args[1] == NULL){
+            fprintf(stderr, "cd: missing argument \n");
+            return;
+        }
+        if(chdir(cmd.args[1]) != 0){
+            perror("cd failed");
+            return;
+        }
+    }
     pid_t pid = fork();
 
     if (pid < 0) {
