@@ -1,12 +1,15 @@
 // responsible for executing user commands
 #include <stdio.h>    // For printf and perror
 #include <stdlib.h>   // For exit
+#include <string.h>   // For strcmp
 #include <unistd.h>   // For fork, execvp, dup2, close
 #include <fcntl.h>    // For open and O_RDONLY, O_WRONLY, etc.
 #include <sys/wait.h> // For waitpid
 #include "command.h"     // Include the header file for Command structure
-#include <string.h>   // For strcmp
+
 //
+static int job_id = 1;
+
 void execute_command(Command cmd) {
     //Check Built-in commands
     if(strcmp(cmd.command, "cd") == 0){
@@ -18,12 +21,28 @@ void execute_command(Command cmd) {
             perror("cd failed");
             return;
         }
+        return;
+    }
+    if(strcmp(cmd.command, "pwd") == 0){
+        char cwd[1024];
+        if(getcwd(cwd, sizeof(cwd)) != NULL){
+            printf("%s\n", cwd);
+            return;
+        } else {
+            perror("pwd failed");
+            return;
+        }
+        return;
+    }
+    if(strcmp(cmd.command, "exit") == 0){
+        exit(0);
+        return;
     }
     pid_t pid = fork();
 
     if (pid < 0) {
         perror("fork failed");
-        return;
+        return -1;
     }
 
     if (pid == 0) {  // Child process
@@ -65,8 +84,15 @@ void execute_command(Command cmd) {
                 }
             }
         } else {
-            printf("Started: (PID: %d)\n", pid);
+            char cmd_str[256] = ""; 
+            for (int j = 0; cmd.args[j] != NULL; j++) {
+                strcat(cmd_str, cmd.args[j]);
+                strcat(cmd_str, " "); // Add space between arguments
+            }
+            printf("[%d] Started Background Job: %s (PID: %d)\n", job_id, cmd_str, pid);
+            job_id++;
             // Add to background job list
         }
     }
+
 }

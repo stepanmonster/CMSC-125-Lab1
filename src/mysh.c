@@ -7,7 +7,7 @@
 #include "command.h"
 // #include <parser.c> or makefile
 
-char *builtins[] = {"exit", "cd", "pwd"};
+// char *builtins[] = {"exit", "cd", "pwd"};
 
 // void exitShell(void);
 void testPrint(char *args[], int i);
@@ -25,11 +25,11 @@ void testPrint(char *args[], int i);
     }
 } */
 
-void testPrint(char *args[], int i){
-    for(int j = 0; j < i; j++){
-            printf("%s \n", args[j]);
-    }
-}
+// void testPrint(char *args[], int i){
+//     for(int j = 0; j < i; j++){
+//             printf("%s \n", args[j]);
+//     }
+// }
 
 int main(){
     // note: build switch case for built ins
@@ -58,18 +58,18 @@ int main(){
             if(strcmp(token, ">") == 0){
                 output_file = strtok(NULL, " \n");
                 if(output_file == NULL){
-                    printf("Error: No specified output file");
+                    printf("Error: No specified output file\n");
                 }
             } else if (strcmp(token, ">>") == 0){
                 output_file = strtok(NULL, " \n");
                 append = true;
                 if(output_file == NULL){
-                    printf("Error: No specified output file");
+                    printf("Error: No specified output file\n");
                 }
             } else if (strcmp(token, "<") == 0){
                 input_file = strtok(NULL, " \n");
                 if(input_file == NULL){
-                    printf("Error: No specified input file");
+                    printf("Error: No specified input file\n");
                 }
             } else if (strcmp(token, "&") == 0){
                 background = true;
@@ -84,7 +84,7 @@ int main(){
         parseInput(args, &cmd, i, append, background, input_file, output_file);
 
         // put execution calls here (before free input)
-        testPrint(args, i);
+        execute_command(cmd);
 
         // free memory allocated for input
         free(input);
