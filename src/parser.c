@@ -9,45 +9,35 @@
 
 Command parseInput(char *input) {
     Command cmd;
-    memset(&cmd, 0, sizeof(Command));
+    memset(&cmd, 0, sizeof(Command)); // This sets everything to NULL/false
 
-    char *output_file = NULL;
-    char *input_file = NULL;
-    bool append = false;
-    bool background = false;
     int i = 0;
-    char *args[64] = {0}; // Initialize to NULL
-
     char *token = strtok(input, " \n");
+
     while (token != NULL) {
         if (strcmp(token, ">") == 0) {
-            output_file = strtok(NULL, " \n");
+            cmd.output_file = strtok(NULL, " \n");
+            cmd.append = false;
         } else if (strcmp(token, ">>") == 0) {
-            output_file = strtok(NULL, " \n");
-            append = true;
+            cmd.output_file = strtok(NULL, " \n");
+            cmd.append = true;
         } else if (strcmp(token, "<") == 0) {
-            input_file = strtok(NULL, " \n");
+            cmd.input_file = strtok(NULL, " \n");
         } else if (strcmp(token, "&") == 0) {
-            background = true;
+            cmd.background = true;
         } else {
-            if (i < 63) args[i++] = token; // Prevent overflow
+            // Write directly to the struct's array
+            if (i < MAX_ARGS - 1) { 
+                cmd.args[i++] = token;
+            }
         }
         token = strtok(NULL, " \n");
     }
 
-    // Only assign if we actually found arguments
     if (i > 0) {
-        cmd.command = args[0];
-        for (int j = 0; j < i; j++) {
-            cmd.args[j] = args[j];
-        }
-        cmd.args[i] = NULL;
+        cmd.command = cmd.args[0];
+        cmd.args[i] = NULL; // Correctly NULL-terminate the list
     }
-
-    cmd.append = append;
-    cmd.background = background;
-    cmd.input_file = input_file;
-    cmd.output_file = output_file;
 
     return cmd;
 }
