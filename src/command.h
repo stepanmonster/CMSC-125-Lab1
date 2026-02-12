@@ -13,7 +13,7 @@ typedef struct {
     bool background;      // true if & present
 } Command;
 
-void parseInput(char *args[], Command *cmd, int i, bool append, bool background, char *output_file, char *input_file);
+Command parseInput(char *input);
 void execute_command(Command cmd);
 
 #endif
