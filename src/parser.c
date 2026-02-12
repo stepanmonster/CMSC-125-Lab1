@@ -7,14 +7,6 @@
 
 // function prototype declarations
 
-char *outputinput(char *command)
-{
-
-    char *output = command;
-
-    return output;
-}
-
 Command parseInput(char *input) {
     Command cmd;
     memset(&cmd, 0, sizeof(Command));
