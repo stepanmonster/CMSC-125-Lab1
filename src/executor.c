@@ -11,6 +11,10 @@
 static int job_id = 1;
 
 void execute_command(Command cmd) {
+    if (cmd.command == NULL) {
+        return;
+    }
+
     //Check Built-in commands
     if(strcmp(cmd.command, "cd") == 0){
         if(cmd.args[1] == NULL){
