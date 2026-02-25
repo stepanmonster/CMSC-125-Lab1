@@ -10,9 +10,9 @@
 //
 static int job_id = 1;
 
-void execute_command(Command cmd) {
+int execute_command(Command cmd) {
     if (cmd.command == NULL) {
-        return;
+        return -1;
     }
 
     //Check Built-in commands
@@ -22,24 +22,24 @@ void execute_command(Command cmd) {
         }
         if(chdir(cmd.args[1]) != 0){
             perror("cd failed");
-            return;
+            return -1;
         }
-        return;
+        return 0;
     }
     if(strcmp(cmd.command, "pwd") == 0){
         char cwd[1024];
         if(getcwd(cwd, sizeof(cwd)) != NULL){
             printf("%s\n", cwd);
-            return;
+            return 0;
         } else {
             perror("pwd failed");
-            return;
+            return -1;
         }
-        return;
+        return 0;
     }
     if(strcmp(cmd.command, "exit") == 0){
         exit(0);
-        return;
+        return 0;
     }
     pid_t pid = fork();
 
@@ -97,5 +97,5 @@ void execute_command(Command cmd) {
             // Add to background job list
         }
     }
-
+    return 0;
 }
