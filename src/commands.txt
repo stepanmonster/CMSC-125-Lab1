@@ -1,0 +1,39 @@
+pwd
+
+cd ..
+pwd
+
+cd 
+pwd
+
+cd /home/dalealmonia/cmsc125/CMSC-125-Lab1/
+pwd  
+
+echo hello > testdir/test1.txt
+
+echo world>testdir/test2.txt
+
+echo "first line" > testdir/append_test.txt
+echo "second line" >> testdir/append_test.txt
+
+cat testdir/test1.txt
+cat testdir/test2.txt
+cat testdir/append_test.txt
+
+cd src
+pwd
+
+wc -l < command.h
+
+sleep 2 &
+
+ls -h
+cd ..
+
+echo -e "zebra\napple\nmonkey\nbanana" > testdir/in.txt
+sort < testdir/in.txt > testdir/out.txt 
+cat testdir/out.txt
+
+rm testdir/out.txt 
+sort > testdir/out.txt < testdir/in.txt
+cat testdir/out.txt
