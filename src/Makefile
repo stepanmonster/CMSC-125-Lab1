@@ -23,7 +23,6 @@ $(TARGET): $(OBJECTS)
 
 .PHONY: clean all clean-objects
 
-# This is the target that was missing and caused Error 2
 clean-objects:
 	rm -f $(OBJECTS)
 
