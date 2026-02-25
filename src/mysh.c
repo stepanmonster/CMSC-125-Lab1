@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include "command.h"
 
+// to handle edge cases with no spaces
 char *add_spaces_to_operators(const char *input)
 {
     char *expanded = malloc(strlen(input) * 3 + 1);
@@ -39,6 +40,7 @@ char *add_spaces_to_operators(const char *input)
     return expanded;
 }
 
+// reap zombie processes
 bool reap_background_jobs()
 {
     int status;
@@ -67,7 +69,6 @@ int main()
         if (isatty(STDIN_FILENO))
         {
             printf("mysh> ");
-            fflush(stdout); // Crucial for showing the prompt immediately
         }
 
         if (getline(&input, &len, stdin) == -1)
