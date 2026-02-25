@@ -86,3 +86,14 @@ Read user input
 Parse & execute
 → Repeat
 ```
+
+## ⚠️ Known Limitations & Bugs
+
+| Limitation | Description |
+|------------|-------------|
+| **No Piping** | Pipe operator (`\|`) not implemented |
+| **No Quotes** | Doesn't handle spaces inside quotes (e.g., `mkdir "My Folder"` → 2 args) |
+| **No Variables** | Cannot expand `$PATH`, `$HOME`, or environment variables |
+| **Arg Limit** | Fixed at 256 arguments (`MAX_ARGS`) |
+| **No Signals** | No `Ctrl+C`, `Ctrl+Z` job control |
+| **Simple Paths** | Basic path handling only (no `~` expansion) |

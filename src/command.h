@@ -15,6 +15,6 @@ typedef struct {
 } Command;
 
 Command parseInput(char *input);
-void execute_command(Command cmd);
+int execute_command(Command cmd);
 
 #endif
