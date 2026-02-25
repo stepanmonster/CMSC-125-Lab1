@@ -2,39 +2,87 @@
 
 **Authors:** Dale Louize Almonia & Stefan Niedes
 
-## 1. Problem Analysis
-A primary challenge in developing a shell is proper modularization and delegation of responsibilities. Stashing the entire processing and execution logic in a single file is poor practice, as it decreases readability and makes debugging significantly harder. 
+# mysh - A Minimalist UNIX Shell
 
-To ensure a clean "separation of concerns," this project breaks the program into three distinct components to manage shell operations effectively.
+`mysh` is a robust, lightweight UNIX shell implemented in C. It provides a command-line interface for executing system programs, managing background tasks, and handling I/O redirection.
 
-## 2. Solution Architecture
-The program is divided into three major source files and a build configuration:
+## 🚀 Compilation and Usage
 
-* **`mysh.c`**: The entry point of the program responsible for taking user input. It hosts the main input loop and acts as the "glue" that ties the system together by passing input to the parser and then to the executor.
-* **`parser.c`**: Responsible for processing raw user input. It tokenizes the input strings into individual strings, builds the command structure, checks for flags, and identifies the command type.
-* **`executor.c`**: Handles the majority of the shell logic. This is where the actual execution of commands (POSIX process API) takes place.
-* **`Makefile`**: Crucial for compiling and linking the separate files into a single functional executable.
+### Prerequisites
+* A C compiler (gcc)
+* A POSIX-compliant environment (Linux or WSL)
+
+### Building the Shell
+Since a `Makefile` is provided, simply run:
+```bash
+make all
+```
+
+### Running the shell
+```bash
+./mysh
+```
+
+## ✨ Implemented Features
+
+| Feature           | Description                                                           |
+| ----------------- | --------------------------------------------------------------------- |
+| Command Execution | Launches system programs via fork() and execvp().                     |
+| Built-in Commands | Internal support for cd, pwd, and exit for better performance.        |
+| I/O Redirection   | Supports < (input), > (overwrite), and >> (append).                   |
+| Background Jobs   | Appending & runs tasks in the background without blocking the prompt. |
+| Zombie Reaping    | Uses WNOHANG to clean up finished background processes automatically. |
+| Operator Handling | Custom pre-processor handles tokens without spaces (e.g., ls>file).   |
+
+## 🏗️ Architecture & Design Decisions
+
+### 1. Modular Organization
+The project is divided into four distinct layers:
+
+| Module | Responsibility |
+|--------|----------------|
+| **mysh.c** | Main REPL (Read-Eval-Print Loop). Manages the prompt and ensures background jobs are reaped before every new input cycle. |
+| **command.h** | Defines the `Command` data structure, which stores the command name, arguments, redirection files, and execution flags. |
+| **parser.c** | Tokenizes input strings into the `Command` struct. |
+| **executor.c** | Handles the logic for `fork()`, process execution, and file descriptor redirection using `dup2()`. |
+
+### 2. Space-Agnostic Parsing
+**Core Design Choice**: Implementation of `add_spaces_to_operators`.
+
+- **Problem**: Many basic shells fail if users type `ls>output` (no spaces around operators).
+- **Solution**: Pre-processes input strings to inject spaces around operators (`<`, `>`, `>>`, `&`).
+- **Benefit**: Tokenizer always reads operators correctly, improving user experience.
+
+**Example**:
+
+```bash
+Input: ls>output.txt
+Pre-processed: ls > output.txt
+```
+
+→ Correctly parsed as command + redirection
 
 
+### 3. Background Process Management
+**Zombie Prevention Strategy**:
 
----
+- **Problem**: Background processes (`cmd &`) create zombie processes if ignored.
+- **Solution**: At the start of **every loop iteration**, check for completed children using `waitpid()` with `WNOHANG`.
+- **Benefits**:
+  - Keeps process table clean
+  - No complex signal-handling required
+  - Automatic cleanup without user intervention
 
-## 3. Implementation Roadmap
+**Process Flow**:
+```
+REPL Loop:
 
-### Week 1: Foundation & Tokenization
-* Create repository structure.
-* Research UNIX shell mechanics and Makefile configurations.
-* Implement the interactive loop with a prompt using `fgets()` to read input.
-* Implement a tokenizer using `strtok()` to split the command line.
+Reap finished background jobs (WNOHANG)
 
-### Week 2: Core Logic & Features
-* Learn how to implement POSIX process API.
-* Implement shell built-in commands: `exit`, `cd`, and `pwd`.
-* Implement I/O redirection.
-* Implement background execution.
+Print prompt
 
-### Week 3: Testing & Refinement
-* Distinguish between built-in commands and external commands.
-* Test all built-in and external commands.
-* Test redirection logic.
-* Test file permissions and error handling.
+Read user input
+
+Parse & execute
+→ Repeat
+```
