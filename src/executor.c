@@ -18,8 +18,7 @@ void execute_command(Command cmd) {
     //Check Built-in commands
     if(strcmp(cmd.command, "cd") == 0){
         if(cmd.args[1] == NULL){
-            fprintf(stderr, "cd: missing argument \n");
-            return;
+            cmd.args[1] = getenv("HOME"); // Default to home directory if no argument is provided
         }
         if(chdir(cmd.args[1]) != 0){
             perror("cd failed");
